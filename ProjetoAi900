@@ -1,0 +1,55 @@
+1. Escolha do Problema e do Conjunto de Dados:
+Para este exemplo, vamos construir um modelo para prever o preço de casas em São Paulo, Brasil. Usaremos o conjunto de dados "São Paulo Housing Prices" disponível no Kaggle: [URL inválido removido]
+
+2. Pré-processamento dos Dados:
+Importamos as bibliotecas necessárias:
+Python
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+Use o código com cuidado.
+Carregamos o conjunto de dados:
+Python
+df = pd.read_csv('sao_paulo_housing_prices.csv')
+Use o código com cuidado.
+Limpamos os dados:
+Removemos linhas com valores ausentes.
+Corrigimos outliers.
+Transformamos variáveis categóricas em numéricas.
+Dividimos os dados em treino e teste:
+Python
+X_train, X_test, y_train, y_test = train_test_split(df.drop('price', axis=1), df['price'], test_size=0.25, random_state=42)
+Use o código com cuidado.
+3. Treinamento e Avaliação do Modelo:
+Treinamos um modelo de Regressão Linear:
+Python
+model = LinearRegression()
+model.fit(X_train, y_train)
+Use o código com cuidado.
+Avaliamos o modelo no conjunto de teste:
+Python
+y_pred = model.predict(X_test)
+r2 = r2_score(y_test, y_pred)
+mse = mean_squared_error(y_test, y_pred)
+print(f"R²: {r2}")
+print(f"MSE: {mse}")
+Use o código com cuidado.
+4. Criação do Ponto de Extremidade:
+Usamos a biblioteca Flask para criar um endpoint RESTful:
+Python
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    data = request.get_json()
+    prediction = model.predict(np.array(data))
+    return jsonify({'prediction': prediction})
+
+if __name__ == '__main__':
+    app.run()
+Use o código com cuidado.
+O endpoint agora está disponível em http://localhost:5000/predict.
